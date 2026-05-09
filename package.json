@@ -52,7 +52,6 @@
     "typescript": "^6.0.2"
   },
   "dependencies": {
-    "@poppinss/string": "^1.7.1",
     "@shikijs/rehype": "^4.0.2",
     "@shikijs/transformers": "^4.0.2",
     "escape-goat": "^4.0.0",
