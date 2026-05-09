@@ -350,6 +350,22 @@ Here is a paragraph with a [link](./foo)\`
     assert.notInclude(result.content, 'Section content')
   })
 
+  test('use h6 component to override h6 rendering', async ({ assert }) => {
+    const edge = new Edge()
+    edge.mount(join(import.meta.dirname, 'fixtures/views'))
+    edge.use(edgeMarkdown, {})
+
+    const renderer = edge.share({})
+    const result = await renderer.getState().$markdown.render({
+      content: dedent`
+        ###### Section title
+        `,
+    })
+
+    assert.include(result.content, 'class="custom-h6"')
+    assert.notMatch(result.content, /<h6(?! class="custom-h6")/)
+  })
+
   test('preview returns full content when there is no h2', async ({ assert }) => {
     const edge = new Edge()
     edge.mount(join(import.meta.dirname, 'fixtures/views'))
