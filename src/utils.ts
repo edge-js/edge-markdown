@@ -9,6 +9,7 @@
 
 import { type VFile } from 'vfile'
 import { type Edge } from 'edge.js'
+import string from '@poppinss/string'
 import { htmlEscape } from 'escape-goat'
 import { find, html } from 'property-information'
 import { type VoidHtmlTags, voidHtmlTags } from 'html-tags'
@@ -111,8 +112,10 @@ export function discoverMarkdownComponents(edge: Edge, prefix: string) {
     /**
      * Collect components with the tagName.
      */
-    const tagName = componentName.replace(new RegExp(componentsBasePath), '').replace(/_/g, '-')
-    result[tagName] = componentName
+    const tagName = componentName.replace(new RegExp(componentsBasePath), '')
+    const lowerTagName = tagName.toLowerCase()
+    const isHeadingTag = /^h[1-6]$/.test(lowerTagName)
+    result[isHeadingTag ? lowerTagName : string.dashCase(tagName)] = componentName
     return result
   }, {})
 }

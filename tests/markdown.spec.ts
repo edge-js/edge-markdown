@@ -366,6 +366,22 @@ Here is a paragraph with a [link](./foo)\`
     assert.notMatch(result.content, /<h6(?! class="custom-h6")/)
   })
 
+  test('use h5 component saved as H5.edge to override h5 rendering', async ({ assert }) => {
+    const edge = new Edge()
+    edge.mount(join(import.meta.dirname, 'fixtures/views'))
+    edge.use(edgeMarkdown, {})
+
+    const renderer = edge.share({})
+    const result = await renderer.getState().$markdown.render({
+      content: dedent`
+        ##### Section title
+        `,
+    })
+
+    assert.include(result.content, 'class="custom-h5"')
+    assert.notMatch(result.content, /<h5(?! class="custom-h5")/)
+  })
+
   test('preview returns full content when there is no h2', async ({ assert }) => {
     const edge = new Edge()
     edge.mount(join(import.meta.dirname, 'fixtures/views'))
