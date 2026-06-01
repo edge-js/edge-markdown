@@ -113,7 +113,9 @@ export function discoverMarkdownComponents(edge: Edge, prefix: string) {
      * Collect components with the tagName.
      */
     const tagName = componentName.replace(new RegExp(componentsBasePath), '')
-    result[string.dashCase(tagName)] = componentName
+    const lowerTagName = tagName.toLowerCase()
+    const isHeadingTag = /^h[1-6]$/.test(lowerTagName)
+    result[isHeadingTag ? lowerTagName : string.dashCase(tagName)] = componentName
     return result
   }, {})
 }
