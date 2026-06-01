@@ -1,7 +1,7 @@
 {
   "name": "edge-markdown",
   "description": "Render markdown using the MDC syntax and integrate it with Edge components",
-  "version": "1.10.1",
+  "version": "1.10.2",
   "engines": {
     "node": ">=24.0.0"
   },
