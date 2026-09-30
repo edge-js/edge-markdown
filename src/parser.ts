@@ -156,7 +156,7 @@ export class MarkdownParser {
    *   highlight: true,
    *   toc: true,
    *   remarkPlugins: [],
-   *   rhypePlugins: [],
+   *   rehypePlugins: [],
    *   allowHTML: true
    * })
    * ```
@@ -183,7 +183,7 @@ export class MarkdownParser {
     /**
      * Applying remark plugin before we convert MDAST AST to HAST
      */
-    options.remarkPlugins.forEach((plugin) => stream.use(plugin))
+    stream.use(options.remarkPlugins)
 
     /**
      * Converting the AST to HAST and applying its plugins
@@ -213,7 +213,7 @@ export class MarkdownParser {
     /**
      * Applying rehype plugins
      */
-    options.rhypePlugins.forEach((plugin) => stream.use(plugin))
+    stream.use(options.rehypePlugins)
     await stream.use(this.#passThroughCompiler).process(vFile)
 
     return {

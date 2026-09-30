@@ -91,7 +91,7 @@ export class Markdown {
       allowHTML: true,
       components: {},
       remarkPlugins: [],
-      rhypePlugins: [],
+      rehypePlugins: [],
       highlight: true,
       hooks: [],
       toc: { enabled: true, maxDepth: 2, minDepth: 2 },

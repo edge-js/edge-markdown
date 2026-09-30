@@ -11,8 +11,19 @@ import { Edge } from 'edge.js'
 import { join } from 'node:path'
 import { dedent } from 'ts-dedent'
 import { test } from '@japa/runner'
+import { type Plugin } from 'unified'
+import { type Root } from 'mdast'
+import { visit } from 'unist-util-visit'
 import { readFile } from 'node:fs/promises'
 import { edgeMarkdown } from '../src/plugin.ts'
+
+const remarkPrefix: Plugin<[options: { prefix: string }], Root> = function ({ prefix }) {
+  return (tree) => {
+    visit(tree, 'text', (node) => {
+      node.value = `${prefix}${node.value}`
+    })
+  }
+}
 
 test.group('Markdown', () => {
   test('parse markdown with GFM syntax', async ({ assert }) => {
@@ -26,6 +37,19 @@ test.group('Markdown', () => {
       .$markdown.render({ file: join(import.meta.dirname, 'fixtures/gfm.mdc') })
 
     assert.snapshot(result.content).match()
+  })
+
+  test('passes options to remark plugins', async ({ assert }) => {
+    const edge = new Edge()
+    edge.mount(join(import.meta.dirname, 'fixtures/views'))
+    edge.use(edgeMarkdown, {
+      remarkPlugins: [[remarkPrefix, { prefix: 'prefix: ' }]],
+    })
+
+    const renderer = edge.share({})
+    const result = await renderer.getState().$markdown.render({ content: 'Hello' })
+
+    assert.equal(result.content, '<p>prefix: Hello</p>')
   })
 
   test('parse markdown from raw contents', async ({ assert }) => {
